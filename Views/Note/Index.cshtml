@@ -1,0 +1,30 @@
+﻿@using WebApplication1.Models;
+@model List<NoteModel>
+
+<h2>Список Заметок</h2>
+
+<a asp-action="Create" class="btn btn-primary">Создать Заметку</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Имя</th>
+            <th>Статус</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var note in Model)
+        {
+            <tr>
+                <td>@note.Name</td>
+                <td>@note.Status</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@note.Id">Редактировать</a> |
+                    <a asp-action="Details" asp-route-id="@note.Id">Подробности</a> |
+                    <a asp-action="Delete" asp-route-id="@note.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
