@@ -1,5 +1,5 @@
-﻿@using WebApplication1.Models;
-@model List<NoteModel>
+﻿@using NotesApp.Models;
+@model List<Note>
 
 <h2>Список Заметок</h2>
 
@@ -19,11 +19,7 @@
             <tr>
                 <td>@note.Name</td>
                 <td>@note.Status</td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@note.Id">Редактировать</a> |
-                    <a asp-action="Details" asp-route-id="@note.Id">Подробности</a> |
-                    <a asp-action="Delete" asp-route-id="@note.Id">Удалить</a>
-                </td>
+                <td>@note.Group</td>
             </tr>
         }
     </tbody>

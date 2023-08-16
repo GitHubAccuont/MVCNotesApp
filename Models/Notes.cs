@@ -1,99 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NotesApp.Models;
 
-namespace WebApplication1.Models
+public class Notes
 {
+    private readonly NotesDbContext _dbContext;
 
-    public class Notes
+    public Notes(NotesDbContext dbContext)
     {
-        public List<NoteModel> notes { get; set; }
+        _dbContext = dbContext;
+    }
 
-        public Notes()
+    public void ChangeStatus(int id, Status status)
+    {
+        var noteToUpdate = _dbContext.Notes.FirstOrDefault(n => n.id == id);
+        if (noteToUpdate != null)
         {
-            notes = new List<NoteModel>();
+            noteToUpdate.Status = status;
+            _dbContext.SaveChanges();
         }
-
-        public void AddTask(string s)
+        else
         {
-            NoteModel note = new NoteModel();
-            note.Id = notes.Count + 1;
-            note.Status = Status.InProgress;
-            note.Name = s;
-            notes.Add(note);
+            Console.WriteLine("Некорректный id заметки или статус для смены");
         }
+    }
 
-        public List<NoteModel> GetNotes()
+    public void CloseTask(int id)
+    {
+        var noteToRemove = _dbContext.Notes.FirstOrDefault(n => n.id == id);
+        if (noteToRemove != null)
         {
-            return notes;
+            _dbContext.Notes.Remove(noteToRemove);
+            _dbContext.SaveChanges();
         }
-
-        public void ChangeStatus(int id, Status status)
+        else
         {
-            try
-            {
-                if (id >= 0 && id < notes.Count)
-                {
-                    NoteModel noteToUpdate = notes[id];
-                    noteToUpdate.Status = status;
-                    notes[id] = noteToUpdate;
-                }
-                else
-                {
-                    Console.WriteLine("Некорректный id заметки или статус для смены");
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            Console.WriteLine("Некорректный id заметки");
         }
+    }
 
+    public List<Note> SearchWithStatus(Status status)
+    {
+        return _dbContext.Notes.Where(n => n.Status == status).ToList();
+    }
 
-        public void CloseTask(int id)
-        {
-            if (id >= 0 && id < notes.Count) {
-                notes.RemoveAt(id);
-            } else {
-                Console.WriteLine("Некорректный id заметки");
-            }
-        }
+    public Note SearchWithName(string name)
+    {
+        return _dbContext.Notes.FirstOrDefault(n => n.Name == name);
+    }
 
-        public List<NoteModel> SearchWithStatus(Status n)
-        {
-            List<NoteModel> list = new List<NoteModel>();
-            foreach (NoteModel note in notes)
-            {
-                if (note.Status == n)
-                {
-                    list.Add(note);
-                }
-            }
-            return list;
-        }
-
-        public NoteModel? SearchWithName(string s)
-        {
-            if (s == null) return null;
-            foreach (NoteModel note in notes)
-            {
-                if(note.Name==s)
-                    return note;
-            }
-            return null;
-        }
-
-        public NoteModel? SearchWithId(int n)
-        {
-            if (n >= 0 && n < notes.Count)
-            {
-                return notes[n];
-            }
-            else
-            {
-                Console.WriteLine("Некорректный id заметки");
-            }
-            return null;
-        }
-
+    public Note SearchWithId(int id)
+    {
+        return _dbContext.Notes.FirstOrDefault(n => n.id == id);
     }
 }
