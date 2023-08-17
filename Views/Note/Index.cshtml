@@ -1,16 +1,13 @@
-﻿@using NotesApp.Models;
-@model List<Note>
+﻿@model List<NotesApp.Models.Note>
 
-<h2>Список Заметок</h2>
-
-<a asp-action="Create" class="btn btn-primary">Создать Заметку</a>
+<h2>Notes List</h2>
 
 <table class="table">
     <thead>
         <tr>
             <th>Имя</th>
             <th>Статус</th>
-            <th></th>
+            <th>Группа</th>
         </tr>
     </thead>
     <tbody>
@@ -24,3 +21,5 @@
         }
     </tbody>
 </table>
+
+<a asp-action="Create" class="btn btn-primary">Create New Note</a>

@@ -6,18 +6,28 @@ namespace NotesApp.Controllers
 {
     public class NoteController : Controller
     {
-        private readonly NotesDbContext _dbContext;
+        private readonly NotesService _noteService;
 
-        public NoteController(NotesDbContext dbContext)
+        public NoteController(NotesService noteService)
         {
-            _dbContext = dbContext;
+            _noteService = noteService;
         }
 
         public async Task<IActionResult> Index()
         {
-            List<Note> notes = await _dbContext.Notes.ToListAsync();
+            List<Note> notes = await _noteService.ToListAsync();
             return View(notes);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create(Note note)
+        {
+            if (ModelState.IsValid)
+            {
+                await _noteService.AddNoteAsync(note);
+                return RedirectToAction("Index");
+            }
+            return View(note);
+        }
     }
 }

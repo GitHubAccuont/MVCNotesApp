@@ -11,7 +11,6 @@ namespace NotesApp.Models
         public string Group { get; set; }
     }
 
-
     public enum Status
     {
         InProgress,
