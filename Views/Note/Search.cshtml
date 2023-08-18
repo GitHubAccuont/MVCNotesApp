@@ -1,0 +1,62 @@
+﻿@model MVCNotesApp.Models.SearchModel
+
+<h2>Search Notes</h2>
+
+<form asp-action="Search" method="post">
+    <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status" name="status" class="form-control">
+            <option value="">All</option>
+            <option value="ToDo">To Do</option>
+            <option value="InProgress">In Progress</option>
+            <option value="Done">Done</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="id">ID:</label>
+        <input type="number" id="id" name="id" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="group">Group:</label>
+        <input type="text" id="group" name="group" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
+@if (ViewBag.SearchResults != null && ViewBag.SearchResults.Count > 0)
+{
+    <h2>Search Results</h2>
+
+    <a asp-action="Index" class="btn btn-primary">Back to Notes Page</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Group</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var note in ViewBag.SearchResults)
+            {
+                <tr>
+                    <td>@note.Id</td>
+                    <td>@note.Name</td>
+                    <td>@note.Status</td>
+                    <td>@note.Group</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (ViewBag.SearchResults != null && ViewBag.SearchResults.Count == 0)
+{
+    <p>No results found.</p>
+}
+
